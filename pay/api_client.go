@@ -4,11 +4,13 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"crypto/tls"
+	"fmt"
 	"github.com/golang-jwt/jwt"
 	"github.com/pkg6/go-apple/util"
 	"github.com/zzqqw/gclient"
 	"net"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -21,20 +23,54 @@ type ResponseErrorMessage struct {
 	ErrorCode    int    `json:"errorCode,omitempty"`
 	ErrorMessage string `json:"errorMessage,omitempty"`
 }
+type SignedTransaction string
 
-// ApiClient
+func (s *SignedTransaction) DecodeSignedTransaction() (ti *TransactionsItem, err error) {
+	if *s == "" {
+		return nil, fmt.Errorf("signedTransactions is empty")
+	}
+	ti = new(TransactionsItem)
+	if err = ExtractClaims(string(*s), ti); err != nil {
+		return nil, err
+	}
+	return ti, nil
+}
+
+type ApiClientConfig struct {
+	ISS          string `json:"iss"`
+	BID          string `json:"bid"`
+	KeyID        string `json:"keyID"`
+	PrivateKey   string `json:"privateKey"`
+	IsProduction bool   `json:"isProduction"`
+}
+
+func (config *ApiClientConfig) NewApi() (api *ApiClient, err error) {
+	var privateKey []byte
+	if util.IsFile(config.PrivateKey) {
+		privateKey, err = os.ReadFile(config.PrivateKey)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		privateKey = []byte(config.PrivateKey)
+	}
+	return NewApiClient(config.ISS, config.BID, config.KeyID, privateKey, config.IsProduction)
+}
 
 type ApiClient struct {
-	//Your app’s bundle ID (exp: “com.example.testbundleid2021”)
-	Bid string
 	//https://appstoreconnect.apple.com/access/api/subs
-	// Your issuer ID from the Keys page in App Store Connect (exp: "57246542-96fe-1a63-e053-0824d011072a")
+	// Your issuer ID from the Key page in App Store Connect (exp: "57246542-96fe-1a63-e053-0824d011072a")
 	Iss string
-	//Your private key ID from App Store Connect (Ex: GTK54UHD42)
-	KeyID        string
+	//Your app’s bundle ID (exp: "com.example.testbundleid2021")
+	Bid string
+	//Your private key ID from App Store Connect (Ex: 2X9R4HXF34)
+	KeyID string
+	//Is it a formal environment
 	IsProduction bool
-	PrivateKey   *ecdsa.PrivateKey
-	Client       gclient.ClientInterface
+	//Parsing private keys
+	PrivateKey *ecdsa.PrivateKey
+	//Request client
+	Client gclient.ClientInterface
 }
 
 func NewApiClient(iss, bid, keyID string, privateKey []byte, isProduction bool) (api *ApiClient, err error) {

@@ -15,19 +15,6 @@ func (a *ApiClient) GetTransactionHistory(transactionId string, body apple.BodyM
 	return
 }
 
-type SignedTransaction string
-
-func (s *SignedTransaction) DecodeSignedTransaction() (ti *TransactionsItem, err error) {
-	if *s == "" {
-		return nil, fmt.Errorf("signedTransactions is empty")
-	}
-	ti = new(TransactionsItem)
-	if err = ExtractClaims(string(*s), ti); err != nil {
-		return nil, err
-	}
-	return ti, nil
-}
-
 // ResponseTransactionHistory
 //Doc: HistoryResponse https://developer.apple.com/documentation/appstoreserverapi/historyresponse
 type ResponseTransactionHistory struct {
