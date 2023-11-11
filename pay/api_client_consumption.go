@@ -8,6 +8,6 @@ import (
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/send_consumption_information
 func (a *ApiClient) SendConsumptionInformation(transactionId string) (err error) {
 	resp := new(ResponseErrorMessage)
-	path := fmt.Sprintf("/inApps/v1/transactions/consumption/%s", transactionId)
+	path := fmt.Sprintf(sendConsumptionInformation, transactionId)
 	return a.WithTokenPut(path, nil, &resp)
 }

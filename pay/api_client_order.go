@@ -8,7 +8,7 @@ import (
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/look_up_order_id
 func (a *ApiClient) LookUpOrderId(orderId string) (resp *ResponseLookUpOrderId, err error) {
 	resp = new(ResponseLookUpOrderId)
-	path := fmt.Sprintf("/inApps/v1/lookup/%s", orderId)
+	path := fmt.Sprintf(lookUpOrderID, orderId)
 	err = a.WithTokenGet(path, nil, &resp)
 	return
 }

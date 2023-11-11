@@ -6,7 +6,7 @@ import "fmt"
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/get_all_subscription_statuses
 func (a *ApiClient) GetAllSubscriptionStatuses(transactionId string) (resp *ResponseAllSubscriptionStatuses, err error) {
 	resp = new(ResponseAllSubscriptionStatuses)
-	path := fmt.Sprintf("/inApps/v1/subscriptions/%s", transactionId)
+	path := fmt.Sprintf(getAllSubscriptionStatuses, transactionId)
 	err = a.WithTokenGet(path, nil, &resp)
 	return
 }

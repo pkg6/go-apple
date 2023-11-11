@@ -10,7 +10,7 @@ import (
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/get_transaction_history
 func (a *ApiClient) GetTransactionHistory(transactionId string, body apple.BodyMap) (resp *ResponseTransactionHistory, err error) {
 	resp = new(ResponseTransactionHistory)
-	path := fmt.Sprintf("/inApps/v1/history/%s", transactionId) + "?" + body.EncodeURLParams()
+	path := fmt.Sprintf(getTransactionHistory, transactionId) + "?" + body.EncodeURLParams()
 	err = a.WithTokenGet(path, nil, &resp)
 	return
 }
@@ -53,7 +53,7 @@ type TransactionsItem struct {
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/get_transaction_info
 func (a *ApiClient) GetTransactionInfo(transactionId string) (resp *ResponseTransactionInfo, err error) {
 	resp = new(ResponseTransactionInfo)
-	path := fmt.Sprintf("/inApps/v1/transactions/%s", transactionId)
+	path := fmt.Sprintf(getTransactionInfo, transactionId)
 	err = a.WithTokenGet(path, nil, &resp)
 	return
 }

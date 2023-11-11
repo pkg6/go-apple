@@ -5,7 +5,7 @@ package pay
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/get_notification_history
 func (a *ApiClient) GetNotificationHistory(paginationToken string) (resp *ResponseNotificationHistory, err error) {
 	resp = new(ResponseNotificationHistory)
-	path := "/inApps/v1/notifications/history"
+	path := getNotificationHistory
 	if paginationToken != "" {
 		path += "?paginationToken=" + paginationToken
 	}

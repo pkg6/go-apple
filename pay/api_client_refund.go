@@ -8,7 +8,7 @@ import (
 // Doc: https://developer.apple.com/documentation/appstoreserverapi/get_refund_history
 func (a *ApiClient) GetRefundHistory(transactionId, revision string) (rsp *ResponseRefundHistory, err error) {
 	resp := new(ResponseRefundHistory)
-	path := fmt.Sprintf("/inApps/v2/refund/lookup/%s", transactionId) + "?revision=" + revision
+	path := fmt.Sprintf(getRefundHistory, transactionId) + "?revision=" + revision
 	err = a.WithTokenGet(path, nil, &resp)
 	return
 }
