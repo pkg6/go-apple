@@ -2,7 +2,7 @@ package pay
 
 import (
 	"context"
-	"github.com/zzqqw/gclient"
+	"github.com/pkg6/go-requests"
 )
 
 const (
@@ -19,6 +19,6 @@ const (
 func VerifyReceipt(ctx context.Context, url, pwd, receipt string) (resp *VerifyResponse, err error) {
 	req := &VerifyRequest{Receipt: receipt, Password: pwd}
 	resp = new(VerifyResponse)
-	err = gclient.New().PostJsonUnmarshal(ctx, url, req, &resp)
+	err = requests.New().PostJsonUnmarshal(ctx, url, req, &resp)
 	return resp, err
 }

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt"
 	"github.com/pkg6/go-apple/util"
-	"github.com/zzqqw/gclient"
+	"github.com/pkg6/go-requests"
 	"net"
 	"net/http"
 	"os"
@@ -85,7 +85,7 @@ type ApiClient struct {
 	//Parsing private keys
 	PrivateKey *ecdsa.PrivateKey
 	//Request client
-	Client gclient.ClientInterface
+	Client *requests.Client
 }
 
 func NewApiClient(iss, bid, keyID string, privateKey []byte, isProduction bool) (api *ApiClient, err error) {
@@ -99,7 +99,7 @@ func NewApiClient(iss, bid, keyID string, privateKey []byte, isProduction bool) 
 		KeepAlive: 30 * time.Second,
 		DualStack: true,
 	}
-	api.Client = gclient.NewSetHttpClient(&http.Client{
+	api.Client = requests.NewWithHttpClient(&http.Client{
 		Timeout: 60 * time.Second,
 		Transport: &http.Transport{
 			Proxy: http.ProxyFromEnvironment,

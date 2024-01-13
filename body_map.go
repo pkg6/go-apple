@@ -2,7 +2,7 @@ package apple
 
 import (
 	"encoding/json"
-	"github.com/zzqqw/gclient"
+	"github.com/pkg6/go-requests"
 	"net/url"
 	"sort"
 	"strings"
@@ -34,7 +34,7 @@ func (bm BodyMap) GetString(key string) string {
 	}
 	v, ok := value.(string)
 	if !ok {
-		return gclient.AnyString(value)
+		return requests.AnyString(value)
 	}
 	return v
 }
