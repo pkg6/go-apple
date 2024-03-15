@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
-	github.com/pkg6/go-requests v0.2.1
+	github.com/pkg6/go-requests v0.2.2
 	github.com/stretchr/testify v1.8.1
 )
 
